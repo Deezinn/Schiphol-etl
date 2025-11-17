@@ -6,4 +6,4 @@ python-dotenv
 requests
 types-requests
 pandas-stubs
-pandas-stubs
+psycopg2-binary
