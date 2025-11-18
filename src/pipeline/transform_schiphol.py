@@ -21,10 +21,14 @@ class TransformSchiphol(BaseTransform):
             raw_destinations=raw_data.get('destinations'), aircraftTypes=raw_data.get('aircraftTypes'))
         
     def process_data(self):
+        self._process_flights()
         self._process_destinations()
+        self._process_airlines()
+        self._process_aircraftTypes()
         
     def _process_flights(self):
-        pass
+        dataframe_flights = pd.DataFrame(self.__raw_flights['flights'])
+        dataframe_flights.to_csv('data/flights.csv')
     
     def _process_destinations(self):
         new_column_name = {
@@ -35,7 +39,6 @@ class TransformSchiphol(BaseTransform):
         }
 
         dataframe_destinations = pd.DataFrame(self.__raw_destinations['destinations'])   
-        
         dataframe_destinations = dataframe_destinations.rename(columns=new_column_name)
         
         for coluna in dataframe_destinations.columns:
@@ -45,23 +48,25 @@ class TransformSchiphol(BaseTransform):
                     dataframe_destinations[coluna] = dataframe_destinations[coluna].str.strip()
                     dataframe_destinations[coluna] = dataframe_destinations[coluna].fillna('Não informado')
                 case 'codigo_iata':
-                    dataframe_destinations['codigo_iata'] = dataframe_destinations['codigo_iata'].str.upper()
-                    dataframe_destinations['codigo_iata'] = dataframe_destinations['codigo_iata'].str.strip()
+                    dataframe_destinations[coluna] = dataframe_destinations[coluna].str.upper()
+                    dataframe_destinations[coluna] = dataframe_destinations[coluna].str.strip()
                     dataframe_destinations[coluna] = dataframe_destinations[coluna].fillna('Não informado')
                 case 'nome_publico':
-                    dataframe_destinations['nome_publico'] = dataframe_destinations['nome_publico'].apply(get_english)
-                    dataframe_destinations['nome_publico'] = dataframe_destinations['nome_publico'].str.strip()
+                    dataframe_destinations[coluna] = dataframe_destinations[coluna].apply(get_english)
+                    dataframe_destinations[coluna] = dataframe_destinations[coluna].str.strip()
                     dataframe_destinations[coluna] = dataframe_destinations[coluna].fillna('Não informado')
                 case _:
-                    return print(f"coluna inválida {coluna}")
-        dataframe_destinations.to_csv('teste.csv')
+                    print(f"Coluna inválida: {coluna}")
+        dataframe_destinations.to_csv('data/destinations.csv')
+        return dataframe_destinations
         
     def _process_airlines(self):
-        pass
+        dataframe_airlines = pd.DataFrame(self.__raw_airlines['airlines'])
+        dataframe_airlines.to_csv('data/airlines.csv')
     
     def _process_aircraftTypes(self):
-        pass
-    
+        dataframe_aircraftTypes = pd.DataFrame(self.__raw_aircraftTypes['aircraftTypes'])
+        dataframe_aircraftTypes.to_csv('data/aircraftTypes.csv')    
         
         
          

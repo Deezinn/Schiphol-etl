@@ -1,21 +1,21 @@
-,country,iata,publicName,city
-0,French Polynes,AAA,"{'dutch': 'Anaa, TU', 'english': 'Anaa, TU'}",
-1,Australia,AAB,"{'dutch': 'Arrabury, QL', 'english': 'Arrabury, QL'}",
-2,Egypt,AAC,"{'dutch': 'Al-Arish', 'english': 'Al-Arish'}",Al-Arish
-3,Sudan,AAD,"{'dutch': 'Ad-Dabbah', 'english': 'Ad-Dabbah'}",Ad-Dabbah
-4,Algeria,AAE,"{'dutch': 'Annaba', 'english': 'Annaba'}",Annaba
-5,USA,AAF,"{'dutch': 'Municipal, FL', 'english': 'Municipal, FL'}",Apalachicola
-6,Brazil,AAG,"{'dutch': 'Arapoti, PR', 'english': 'Arapoti, PR'}",
-7,Germany,AAH,"{'dutch': 'Merzbrueck', 'english': 'Merzbrueck'}",Aachen
-8,Brazil,AAI,"{'dutch': 'Arraias, TD', 'english': 'Arraias, TD'}",
-9,Surinam,AAJ,"{'dutch': 'Cayana Airstrip', 'english': 'Cayana Airstrip'}",Awaradam
-10,Kiribati,AAK,"{'dutch': 'Aranuka', 'english': 'Aranuka'}",
-11,Denmark,AAL,"{'dutch': 'Aalborg', 'english': 'Aalborg'}",Aalborg
-12,South Africa,AAM,"{'dutch': 'Malamala', 'english': 'Malamala'}",
-13,United Arab Emirates (the),AAN,"{'dutch': 'Al Ain', 'english': 'Al Ain'}",Al Ain
-14,Venezuela,AAO,"{'dutch': 'Anaco, AN', 'english': 'Anaco, AN'}",
-15,USA,AAP,"{'dutch': 'Andrau Airpark, TX', 'english': 'Andrau Airpark, TX'}",Houston
-16,Russia (CIS),AAQ,"{'dutch': 'Vitiazevo', 'english': 'Vitiazevo'}",Anapa
-17,Denmark,AAR,"{'dutch': 'Aarhus', 'english': 'Aarhus'}",Aarhus
-18,Indonesia,AAS,"{'dutch': 'Apalapsili', 'english': 'Apalapsili'}",
-19,China,AAT,"{'dutch': 'Altay', 'english': 'Altay'}",
+,pais,codigo_iata,nome_publico,cidade
+0,French Polynes,AAA,"Anaa, Tu",Não informado
+1,Australia,AAB,"Arrabury, Ql",Não informado
+2,Egypt,AAC,Al-Arish,Al-Arish
+3,Sudan,AAD,Ad-Dabbah,Ad-Dabbah
+4,Algeria,AAE,Annaba,Annaba
+5,Usa,AAF,"Municipal, Fl",Apalachicola
+6,Brazil,AAG,"Arapoti, Pr",Não informado
+7,Germany,AAH,Merzbrueck,Aachen
+8,Brazil,AAI,"Arraias, Td",Não informado
+9,Surinam,AAJ,Cayana Airstrip,Awaradam
+10,Kiribati,AAK,Aranuka,Não informado
+11,Denmark,AAL,Aalborg,Aalborg
+12,South Africa,AAM,Malamala,Não informado
+13,United Arab Emirates (The),AAN,Al Ain,Al Ain
+14,Venezuela,AAO,"Anaco, An",Não informado
+15,Usa,AAP,"Andrau Airpark, Tx",Houston
+16,Russia (Cis),AAQ,Vitiazevo,Anapa
+17,Denmark,AAR,Aarhus,Aarhus
+18,Indonesia,AAS,Apalapsili,Não informado
+19,China,AAT,Altay,Não informado
