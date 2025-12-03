@@ -1,2 +1,3 @@
-from .extract_interface import BaseExtract
-from .transform_interface import BaseTransform
+from .extract import ExtractInterface
+from .transform import TransformInterface
+from .load import LoadInterface

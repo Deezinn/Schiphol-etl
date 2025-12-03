@@ -1,7 +1,6 @@
-from src.pipeline import SchipholExtract, TransformSchiphol
+from ..pipeline import Extract, Transform, Load
 
-
-class SchipholOrchestrator:
+class Main:
     def __init__(self, extract, transform):
       self.__extract = extract
       self.__transform = transform
@@ -13,6 +12,6 @@ class SchipholOrchestrator:
       instance_process.process_data()
       
 if __name__ == "__main__":
-  extractor = SchipholExtract.load_api_url()
-  orchestrator = SchipholOrchestrator(extractor, TransformSchiphol)
+  extractor = Extract.load_api_url()
+  orchestrator = Main(extractor, Transform)
   orchestrator.run_all()

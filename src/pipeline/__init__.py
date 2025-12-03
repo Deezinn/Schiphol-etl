@@ -1,2 +1,3 @@
-from .extract_schiphol import SchipholExtract
-from .transform_schiphol import TransformSchiphol
+from .extract import Extract
+from .transform import Transform
+from .load import Load

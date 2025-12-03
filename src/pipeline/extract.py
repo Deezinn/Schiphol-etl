@@ -1,12 +1,10 @@
+from src.core import ExtractInterface, API_ENDPOINTS
+from src.infrastructure import credentials_schiphol
+
 import requests
 from requests import RequestException
 
-from ..core import BaseExtract
-from ..config import credentials_schiphol
-
-from src.utils import API_ENDPOINTS
-
-class SchipholExtract(BaseExtract):
+class Extract(ExtractInterface):
     def __init__(self, apis_urls, credential):
         self.__apis_urls = apis_urls
         self.__credential = credential 

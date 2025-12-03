@@ -1,21 +1,21 @@
-,pais,codigo_iata,nome_publico,cidade
-0,French Polynes,AAA,"Anaa, Tu",Não Informado
-1,Australia,AAB,"Arrabury, Ql",Não Informado
-2,Egypt,AAC,Al-Arish,Al-Arish
-3,Sudan,AAD,Ad-Dabbah,Ad-Dabbah
-4,Algeria,AAE,Annaba,Annaba
-5,Usa,AAF,"Municipal, Fl",Apalachicola
-6,Brazil,AAG,"Arapoti, Pr",Não Informado
-7,Germany,AAH,Merzbrueck,Aachen
-8,Brazil,AAI,"Arraias, Td",Não Informado
-9,Surinam,AAJ,Cayana Airstrip,Awaradam
-10,Kiribati,AAK,Aranuka,Não Informado
-11,Denmark,AAL,Aalborg,Aalborg
-12,South Africa,AAM,Malamala,Não Informado
-13,United Arab Emirates (The),AAN,Al Ain,Al Ain
-14,Venezuela,AAO,"Anaco, An",Não Informado
-15,Usa,AAP,"Andrau Airpark, Tx",Houston
-16,Russia (Cis),AAQ,Vitiazevo,Anapa
-17,Denmark,AAR,Aarhus,Aarhus
-18,Indonesia,AAS,Apalapsili,Não Informado
-19,China,AAT,Altay,Não Informado
+,cidade,pais,codigo_iata,nome_publico
+0,Não Informado,French Polynes,AAA,"Anaa, Tu"
+1,Não Informado,Australia,AAB,"Arrabury, Ql"
+2,Al-Arish,Egypt,AAC,Al-Arish
+3,Ad-Dabbah,Sudan,AAD,Ad-Dabbah
+4,Annaba,Algeria,AAE,Annaba
+5,Apalachicola,Usa,AAF,"Municipal, Fl"
+6,Não Informado,Brazil,AAG,"Arapoti, Pr"
+7,Aachen,Germany,AAH,Merzbrueck
+8,Não Informado,Brazil,AAI,"Arraias, Td"
+9,Awaradam,Surinam,AAJ,Cayana Airstrip
+10,Não Informado,Kiribati,AAK,Aranuka
+11,Aalborg,Denmark,AAL,Aalborg
+12,Não Informado,South Africa,AAM,Malamala
+13,Al Ain,United Arab Emirates (The),AAN,Al Ain
+14,Não Informado,Venezuela,AAO,"Anaco, An"
+15,Houston,Usa,AAP,"Andrau Airpark, Tx"
+16,Anapa,Russia (Cis),AAQ,Vitiazevo
+17,Aarhus,Denmark,AAR,Aarhus
+18,Não Informado,Indonesia,AAS,Apalapsili
+19,Não Informado,China,AAT,Altay

@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-class BaseExtract(ABC):
+class ExtractInterface(ABC):
     """
     Interface base para extratores de dados da API Schiphol.
     """

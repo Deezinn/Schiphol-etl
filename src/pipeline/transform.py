@@ -1,8 +1,9 @@
-import pandas as pd
-from ..utils import get_english
-from ..core import BaseTransform
+from src.core import EntityMapper, get_english, TransformInterface
 
-class TransformSchiphol(BaseTransform):
+import pandas as pd
+
+
+class Transform(TransformInterface):
     def __init__(self, raw_flights, raw_airlines, raw_destinations, aircraftTypes):
         self.__raw_flights = raw_flights
         self.__raw_airlines = raw_airlines
@@ -16,12 +17,12 @@ class TransformSchiphol(BaseTransform):
         
         if not isinstance(raw_data, dict):
             raise TypeError("Tipo dos dados deveriam vir como dict")
-
+        
         return cls(
-            raw_flights=raw_data.get('flights'),
-            raw_airlines=raw_data.get('airlines'),
-            raw_destinations=raw_data.get('destinations'),
-            aircraftTypes=raw_data.get('aircraftTypes')
+            raw_flights=EntityMapper.flights(raw_data.get('flights')),
+            raw_airlines=EntityMapper.airlines(raw_data.get('airlines')),
+            raw_destinations=EntityMapper.destinations(raw_data.get('destinations')),
+            aircraftTypes=EntityMapper.aircraft_types(raw_data.get('aircraftTypes'))
         )
         
     def process_data(self):
@@ -44,7 +45,7 @@ class TransformSchiphol(BaseTransform):
 
         valores_invalidos = ['N/A', 'null', 'na', 'undefined', None]
         
-        dataframe_destinations = pd.DataFrame(self.__raw_destinations['destinations'])   
+        dataframe_destinations = pd.DataFrame(self.__raw_destinations)   
         dataframe_destinations = dataframe_destinations.rename(columns=colunas_traduzidas)
         dataframe_destinations = dataframe_destinations.replace(valores_invalidos, 'Não informado').fillna('Não informado')
         
@@ -75,7 +76,7 @@ class TransformSchiphol(BaseTransform):
         return dataframe_destinations
         
     def _process_airlines(self):
-        dataframe_airlines = pd.DataFrame(self.__raw_airlines['airlines'])
+        dataframe_airlines = pd.DataFrame(self.__raw_airlines)
         
         valores_invalidos = ['N/A', 'null', 'none', 'na', 'undefined', '""', 'None']
 
@@ -125,7 +126,7 @@ class TransformSchiphol(BaseTransform):
         return dataframe_airlines
             
     def _process_aircraftTypes(self):
-        dataframe_aircraftTypes = pd.DataFrame(self.__raw_aircraftTypes['aircraftTypes'])
+        dataframe_aircraftTypes = pd.DataFrame(self.__raw_aircraftTypes)
 
         colunas_traduzidas = {
             'iataMain': 'iata_principal', 

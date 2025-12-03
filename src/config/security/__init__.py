@@ -1,2 +1,0 @@
-from .credentials_schiphol import credentials_schiphol
-from .credentials_database import credentials_database
