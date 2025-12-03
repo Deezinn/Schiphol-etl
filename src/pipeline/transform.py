@@ -34,7 +34,6 @@ class Transform(TransformInterface):
         
     def _process_flights(self):
         dataframe_flights = pd.DataFrame(self.__raw_flights['flights'])
-        print(len(dataframe_flights.columns))
         dataframe_flights.to_csv('data/flights.csv')
     
     def _process_destinations(self):

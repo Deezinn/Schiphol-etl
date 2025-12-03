@@ -6,6 +6,7 @@ class Main:
       self.__transform = transform
     
     def run_all(self):
+      
       raw_data = self.__extract.fetch_data()
       
       instance_process = self.__transform.load_raw_data(raw_data)
