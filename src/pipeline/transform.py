@@ -1,4 +1,5 @@
 from src.core import EntityMapper, get_english, TransformInterface
+from src.domain.exceptions import TraducaoError
 
 import pandas as pd
 
@@ -33,20 +34,30 @@ class Transform(TransformInterface):
         
     def _process_flights(self):
         dataframe_flights = pd.DataFrame(self.__raw_flights['flights'])
+        print(len(dataframe_flights.columns))
         dataframe_flights.to_csv('data/flights.csv')
     
     def _process_destinations(self):
-        colunas_traduzidas = {
-            'country': 'pais',
-            'iata': 'codigo_iata',
-            'publicName': 'nome_publico',
-            'city': 'cidade'
-        }
-
+        dataframe_destinations = pd.DataFrame(self.__raw_destinations) 
+          
+        try:
+            colunas_traduzidas = {
+                'country': 'pais',
+                'iata': 'codigo_iata',
+                'publicName': 'nome_publico',
+                'city': 'cidade'
+            }
+            
+            for col in colunas_traduzidas.keys():
+                if col not in dataframe_destinations.columns:
+                    raise TraducaoError(f"Coluna '{col}' não existe no dataframe")
+            
+            dataframe_destinations = dataframe_destinations.rename(columns=colunas_traduzidas)
+        except TraducaoError as e:
+            print(f'error: não consegui traduzir as colunas {e}')
+            # gerar log de erro
+            
         valores_invalidos = ['N/A', 'null', 'na', 'undefined', None]
-        
-        dataframe_destinations = pd.DataFrame(self.__raw_destinations)   
-        dataframe_destinations = dataframe_destinations.rename(columns=colunas_traduzidas)
         dataframe_destinations = dataframe_destinations.replace(valores_invalidos, 'Não informado').fillna('Não informado')
         
         for coluna in dataframe_destinations.columns:                
@@ -77,24 +88,33 @@ class Transform(TransformInterface):
         
     def _process_airlines(self):
         dataframe_airlines = pd.DataFrame(self.__raw_airlines)
-        
+    
+        try: 
+            colunas_traduzidas = {
+                'iata': 'codigo_iata',
+                'icao': 'codigo_icao',
+                'nvls': 'nivel',
+                'publicName': 'nome_publico'
+            }
+            
+            for col in colunas_traduzidas.keys():
+                if col not in dataframe_airlines.columns:
+                    raise TraducaoError(f"Coluna '{col}' não existe no dataframe")
+                
+            dataframe_airlines = dataframe_airlines.rename(columns=colunas_traduzidas)
+        except TraducaoError as e:
+            print(f'error: não consegui traduzir as colunas {e}')
+            # gerar log de erro
+            
+            
         valores_invalidos = ['N/A', 'null', 'none', 'na', 'undefined', '""', 'None']
-
-        colunas_traduzidas = {
-            'iata': 'codigo_iata',
-            'icao': 'codigo_icao',
-            'nvls': 'nivel',
-            'publicName': 'nome_publico'
-        }
-
-        dataframe_airlines = dataframe_airlines.rename(columns=colunas_traduzidas)
 
         for coluna in dataframe_airlines.columns:
             match coluna:
                 case 'nivel':
                     dataframe_airlines[coluna] = (
                         dataframe_airlines[coluna]
-                        .replace(valores_invalidos, None)
+                        .replace(valores_invalidos, 0)
                         .astype('Int32')
                         .fillna(0)
                     )
@@ -127,18 +147,25 @@ class Transform(TransformInterface):
             
     def _process_aircraftTypes(self):
         dataframe_aircraftTypes = pd.DataFrame(self.__raw_aircraftTypes)
-
-        colunas_traduzidas = {
-            'iataMain': 'iata_principal', 
-            'iataSub': 'iata_secundario', 
-            'longDescription': 'descricao_longa', 
-            'shortDescription': 'descricao_curta'
-        }
+        try:
+            colunas_traduzidas = {
+                'iataMain': 'iata_principal', 
+                'iataSub': 'iata_secundario', 
+                'longDescription': 'descricao_longa', 
+                'shortDescription': 'descricao_curta'
+            }
+            
+            for col in colunas_traduzidas.keys():
+                if col not in dataframe_aircraftTypes.columns:
+                    raise TraducaoError(f"Coluna '{col}' não existe no dataframe")
+                
+            dataframe_aircraftTypes = dataframe_aircraftTypes.rename(columns=colunas_traduzidas)
+        except TraducaoError as e:
+            print(f'error: não consegui traduzir as colunas {e}')
+            # gerar log de erro
 
         valores_invalidos = ['N/A', 'null', 'na', 'undefined', None]
         
-        dataframe_aircraftTypes = dataframe_aircraftTypes.rename(columns=colunas_traduzidas)
-
         for coluna in dataframe_aircraftTypes.columns:
             dataframe_aircraftTypes[coluna] = (
                 dataframe_aircraftTypes[coluna]

@@ -17,10 +17,10 @@ class EntityMapper:
         # 'iata', 'icao', 'nvls', 'publicName'
         dados = raw.get('airlines')
         return ([
-            Airlines(codigo_iata=dado.get('iata'),
-                     codigo_icao=dado.get('icao'),
-                     nivel=dado.get('nvls'),
-                     nome_publico=dado.get('publicName'))
+            Airlines(iata=dado.get('iata'),
+                     icao=dado.get('icao'),
+                     nvls=dado.get('nvls'),
+                     publicName=dado.get('publicName'))
         for dado in dados])
     
     @staticmethod
@@ -35,4 +35,35 @@ class EntityMapper:
 
     @staticmethod
     def flights(raw):
+        # lastUpdatedAt,
+        # actualLandingTime,
+        # aircraftRegistration,
+        # aircraftType,
+        # baggageClaim,
+        # codeshares,
+        # estimatedLandingTime,
+        # expectedTimeOnBelt,
+        # flightDirection,
+        # flightName,
+        # flightNumber,
+        # gate,
+        # pier,
+        # id,
+        # isOperationalFlight,
+        # mainFlight,
+        # prefixIATA,
+        # prefixICAO,
+        # airlineCode,
+        # publicFlightState,
+        # route,
+        # scheduleDateTime,
+        # scheduleDate,
+        # scheduleTime,
+        # serviceType,
+        # terminal,
+        # schemaVersion,
+        # actualOffBlockTime,
+        # checkinAllocations,
+        # expectedSecurityFilter
+        
         return raw
