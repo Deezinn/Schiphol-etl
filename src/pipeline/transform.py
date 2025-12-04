@@ -56,7 +56,7 @@ class Transform(TransformInterface):
             print(f'error: não consegui traduzir as colunas {e}')
             # gerar log de erro
             
-        valores_invalidos = ['N/A', 'null', 'na', 'undefined', None]
+        valores_invalidos = ['N/A', 'null', 'none','NONE', 'na', 'undefined', '""', 'None']
         dataframe_destinations = dataframe_destinations.replace(valores_invalidos, 'Não informado').fillna('Não informado')
         
         for coluna in dataframe_destinations.columns:                
@@ -106,7 +106,7 @@ class Transform(TransformInterface):
             # gerar log de erro
             
             
-        valores_invalidos = ['N/A', 'null', 'none', 'na', 'undefined', '""', 'None']
+        valores_invalidos = ['N/A', 'null', 'none','NONE', 'na', 'undefined', '""', 'None']
 
         for coluna in dataframe_airlines.columns:
             match coluna:
@@ -122,9 +122,9 @@ class Transform(TransformInterface):
                     dataframe_airlines[coluna] = (
                         dataframe_airlines[coluna]
                         .astype(str)
+                        .str.upper()
                         .replace(valores_invalidos, 'Não informado')
                         .fillna('Não informado')
-                        .str.upper()
                         .str.strip()
                     )
 
@@ -163,7 +163,7 @@ class Transform(TransformInterface):
             print(f'error: não consegui traduzir as colunas {e}')
             # gerar log de erro
 
-        valores_invalidos = ['N/A', 'null', 'na', 'undefined', None]
+        valores_invalidos = ['N/A', 'null', 'none','NONE', 'na', 'undefined', '""', 'None']
         
         for coluna in dataframe_aircraftTypes.columns:
             dataframe_aircraftTypes[coluna] = (
