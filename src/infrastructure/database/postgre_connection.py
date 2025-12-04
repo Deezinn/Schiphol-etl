@@ -8,3 +8,4 @@ url = (
 
 engine = create_engine(url)
 conn = engine.connect()
+print('conectou', conn)

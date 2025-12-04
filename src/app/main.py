@@ -1,4 +1,4 @@
-from ..pipeline import Extract, Transform, Load
+from src.pipeline import Extract, Transform, Load
 
 class Main:
     def __init__(self, extract, transform):
