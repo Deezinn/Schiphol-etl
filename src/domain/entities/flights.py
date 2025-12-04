@@ -1,0 +1,35 @@
+from dataclasses import dataclass
+
+@dataclass
+class Flights:
+    # lastUpdatedAt,
+    # actualLandingTime,
+    # aircraftRegistration,
+    # aircraftType,
+    # baggageClaim,
+    # codeshares,
+    # estimatedLandingTime,
+    # expectedTimeOnBelt,
+    # flightDirection,
+    # flightName,
+    # flightNumber,
+    # gate,
+    # pier,
+    # id,
+    # isOperationalFlight,
+    # mainFlight,
+    # prefixIATA,
+    # prefixICAO,
+    # airlineCode,
+    # publicFlightState,
+    # route,
+    # scheduleDateTime,
+    # scheduleDate,
+    # scheduleTime,
+    # serviceType,
+    # terminal,
+    # schemaVersion,
+    # actualOffBlockTime,
+    # checkinAllocations,
+    # expectedSecurityFilter
+    pass
