@@ -33,7 +33,7 @@ class Transform(TransformInterface):
         self._process_aircraftTypes()
         
     def _process_flights(self):
-        dataframe_flights = pd.DataFrame(self.__raw_flights['flights'])
+        dataframe_flights = pd.DataFrame(self.__raw_flights)
         dataframe_flights.to_csv('data/flights.csv')
     
     def _process_destinations(self):

@@ -35,35 +35,43 @@ class EntityMapper:
 
     @staticmethod
     def flights(raw):
-        # lastUpdatedAt,
-        # actualLandingTime,
-        # aircraftRegistration,
-        # aircraftType,
-        # baggageClaim,
-        # codeshares,
-        # estimatedLandingTime,
-        # expectedTimeOnBelt,
-        # flightDirection,
-        # flightName,
-        # flightNumber,
-        # gate,
-        # pier,
-        # id,
-        # isOperationalFlight,
-        # mainFlight,
-        # prefixIATA,
-        # prefixICAO,
-        # airlineCode,
-        # publicFlightState,
-        # route,
-        # scheduleDateTime,
-        # scheduleDate,
-        # scheduleTime,
-        # serviceType,
-        # terminal,
-        # schemaVersion,
-        # actualOffBlockTime,
-        # checkinAllocations,
-        # expectedSecurityFilter
-        
-        return raw
+        dados = raw.get('flights')
+        return [
+            Flights(
+            lastUpdatedAt=dado.get("lastUpdatedAt"),
+            actualLandingTime=dado.get("actualLandingTime"),
+            aircraftRegistration=dado.get("aircraftRegistration"),
+            aircraftType=dado.get("aircraftType"),
+            baggageClaim=dado.get("baggageClaim"),
+            codeshares=dado.get("codeshares"),
+            estimatedLandingTime=dado.get("estimatedLandingTime"),
+            expectedTimeOnBelt=dado.get("expectedTimeOnBelt"),
+            flightDirection=dado.get("flightDirection"),
+            flightName=dado.get("flightName"),
+            flightNumber=dado.get("flightNumber"),
+            gate=dado.get("gate"),
+            pier=dado.get("pier"),
+            id=dado.get("id"),
+            isOperationalFlight=dado.get("isOperationalFlight"),
+            mainFlight=dado.get("mainFlight"),
+            prefixIATA=dado.get("prefixIATA"),
+            prefixICAO=dado.get("prefixICAO"),
+            airlineCode=dado.get("airlineCode"),
+            publicFlightState=dado.get("publicFlightState"),
+            route=dado.get("route"),
+            scheduleDateTime=dado.get("scheduleDateTime"),
+            scheduleDate=dado.get("scheduleDate"),
+            scheduleTime=dado.get("scheduleTime"),
+            serviceType=dado.get("serviceType"),
+            terminal=dado.get("terminal"),
+            schemaVersion=dado.get("schemaVersion"),
+            checkinAllocations=dado.get("checkinAllocations"),
+            expectedSecurityFilter=dado.get("expectedSecurityFilter"),
+        )
+        for dado in dados
+    ]
+
+    
+    
+    
+   
