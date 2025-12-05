@@ -1,4 +1,4 @@
-from src.core import ExtractInterface, API_ENDPOINTS
+from src.domain import ExtractInterface, API_ENDPOINTS
 from src.infrastructure import credentials_schiphol
 
 import requests

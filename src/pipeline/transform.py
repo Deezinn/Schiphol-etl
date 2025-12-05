@@ -1,6 +1,7 @@
-from src.core import EntityMapper, get_english, TransformInterface
+from src.domain.interfaces import  TransformInterface
 from src.domain.exceptions import TraducaoError
-from src.core.shared import safe_literal_eval
+from src.domain.shared import safe_literal_eval, EntityMapper, get_english
+
 
 import pandas as pd
 
@@ -27,10 +28,12 @@ class Transform(TransformInterface):
         )
         
     def process_data(self):
-        self._process_flights()
-        self._process_destinations()
-        self._process_airlines()
-        self._process_aircraftTypes()
+        
+        return { 'flights': self._process_flights(),
+                'destinations': self._process_destinations(),
+                'airlines': self._process_airlines(),
+                'aircraftTypes': self._process_aircraftTypes()
+        }
         
     def _process_flights(self):
         dataframe_flights = pd.DataFrame(self.__raw_flights)
@@ -74,6 +77,7 @@ class Transform(TransformInterface):
             dataframe_flights = dataframe_flights.rename(columns=colunas_traduzidas)
         except TraducaoError as e:
             pass
+            # log de erro
         
             
         mapper_fillna = {
@@ -95,52 +99,41 @@ class Transform(TransformInterface):
                     'hora_programada':
             
                     dataframe_flights[col] = pd.to_datetime(dataframe_flights[col], format='mixed')    
-                    
                     if col == 'data_programada':
                         dataframe_flights[col] = dataframe_flights[col].dt.strftime('%Y-%m-%d')
 
                     dataframe_flights[col] = dataframe_flights[col].fillna(sentinela)
-
                 case 'registro_aeronave' | 'direcao_voo' | 'nome_voo' | 'prefixo_iata' | \
                     'prefixo_icao' | 'voo_principal' | 'pier' | 'portao' | 'tipo_servico' | \
                     'alocacao_checkin' | 'filtro_seguranca_previsto':
-                        
                     dataframe_flights[col] = dataframe_flights[col].astype(str).str.upper()
                     dataframe_flights[col] = dataframe_flights[col].replace(valores_invalidos, 'Não informado')
                     dataframe_flights[col] = dataframe_flights[col].fillna('Não informado')
-                    
                 case 'tipo_aeronave' | 'retirada_bagagem' | 'codeshare' | 'estado_voo' | 'rota':
-                    
                     dataframe_flights[col] = dataframe_flights[col].apply(
                         lambda x: safe_literal_eval(x, mapper_fillna[col])
                     )
                 case 'numero_voo' | 'codigo_companhia':
-                    
                     dataframe_flights[col] = pd.to_numeric(dataframe_flights[col], errors='coerce')
                     dataframe_flights[col] = dataframe_flights[col].fillna(0).astype('Int32')
-                    
                 case 'id':
                     dataframe_flights[col] = pd.to_numeric(dataframe_flights[col], errors='coerce')
                     dataframe_flights[col] = dataframe_flights[col].fillna(0).astype('Int64')
-                    
                 case 'versao_schema':
-                    
                     dataframe_flights[col] = pd.to_numeric(dataframe_flights[col], errors='coerce')
                     dataframe_flights[col] = dataframe_flights[col].fillna(0).astype('Int8')
-                    
                 case 'voo_operacional':
-
                     dataframe_flights[col] = (
                         dataframe_flights[col]
-                        .replace(valores_invalidos, pd.NA)
+                        .replace(valores_invalidos, False)
                         .astype('boolean')
                     )
-                    
                 case 'terminal':
-                    
                     dataframe_flights[col] = pd.to_numeric(dataframe_flights[col], errors='coerce')
                     dataframe_flights[col] = dataframe_flights[col].fillna(0).astype('Int16')
-
+                case _:
+                    pass
+                    
         dataframe_flights.to_csv('data/flights.csv')
         return dataframe_flights
 

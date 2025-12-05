@@ -20,7 +20,8 @@ class Main:
       instance_process = self.__transform.load_raw_data(raw_data)
       if instance_process:
         logger.info("Transformação Iniciada")
-        instance_process.process_data()
+        process = instance_process.process_data()
+
         logger.info("Teransformação finalizada")
       
   
