@@ -1,8 +1,8 @@
 from src.core import EntityMapper, get_english, TransformInterface
 from src.domain.exceptions import TraducaoError
+from src.core.shared import safe_literal_eval
 
 import pandas as pd
-
 
 class Transform(TransformInterface):
     def __init__(self, raw_flights, raw_airlines, raw_destinations, aircraftTypes):
@@ -34,8 +34,116 @@ class Transform(TransformInterface):
         
     def _process_flights(self):
         dataframe_flights = pd.DataFrame(self.__raw_flights)
+        try:
+            colunas_traduzidas = {
+                "lastUpdatedAt": "ultima_atualizacao",
+                "actualLandingTime": "hora_pouso_real",
+                "aircraftRegistration": "registro_aeronave",
+                "aircraftType": "tipo_aeronave",
+                "baggageClaim": "retirada_bagagem",
+                "codeshares": "codeshare",
+                "estimatedLandingTime": "hora_pouso_estimado",
+                "expectedTimeOnBelt": "tempo_previsto_esteira",
+                "flightDirection": "direcao_voo",
+                "flightName": "nome_voo",
+                "flightNumber": "numero_voo",
+                "gate": "portao",
+                "pier": "pier",
+                "id": "id",
+                "isOperationalFlight": "voo_operacional",
+                "mainFlight": "voo_principal",
+                "prefixIATA": "prefixo_iata",
+                "prefixICAO": "prefixo_icao",
+                "airlineCode": "codigo_companhia",
+                "publicFlightState": "estado_voo",
+                "route": "rota",
+                "scheduleDateTime": "data_hora_programada",
+                "scheduleDate": "data_programada",
+                "scheduleTime": "hora_programada",
+                "serviceType": "tipo_servico",
+                "terminal": "terminal",
+                "schemaVersion": "versao_schema",
+                "checkinAllocations": "alocacao_checkin",
+                "expectedSecurityFilter": "filtro_seguranca_previsto"
+            }
+            
+            for col in colunas_traduzidas.keys():
+                if col not in dataframe_flights.columns:
+                    raise TraducaoError(f"Coluna '{col}' não existe no dataframe.")
+                
+            dataframe_flights = dataframe_flights.rename(columns=colunas_traduzidas)
+        except TraducaoError as e:
+            pass
+        
+            
+        mapper_fillna = {
+            'tipo_aeronave' : {'iataMain': "Não informado", 'iataSub': 'Não informado'},
+            'retirada_bagagem': {'belts': 'Não informado'},
+            'codeshare': {'codeshares': 'Não informado'},
+            'estado_voo': {'flightStates': 'Não informado'},
+            'rota': {'destomatopms': 'Não informado', 'eu': 'Não informado', 'visa': False}
+        }
+        
+        sentinela = pd.Timestamp('1900-01-01', tz='UTC')
+        
+        valores_invalidos = ['N/A', 'null', 'na', 'undefined', None, 'NaN', 'NAN', 'nan', 'NONE']
+                
+        for col in dataframe_flights.columns:
+             match col:
+                case 'ultima_atualizacao' | 'hora_pouso_real' | 'hora_pouso_estimado' | \
+                    'tempo_previsto_esteira' | 'data_hora_programada' | 'data_programada' | \
+                    'hora_programada':
+            
+                    dataframe_flights[col] = pd.to_datetime(dataframe_flights[col], format='mixed')    
+                    
+                    if col == 'data_programada':
+                        dataframe_flights[col] = dataframe_flights[col].dt.strftime('%Y-%m-%d')
+
+                    dataframe_flights[col] = dataframe_flights[col].fillna(sentinela)
+
+                case 'registro_aeronave' | 'direcao_voo' | 'nome_voo' | 'prefixo_iata' | \
+                    'prefixo_icao' | 'voo_principal' | 'pier' | 'portao' | 'tipo_servico' | \
+                    'alocacao_checkin' | 'filtro_seguranca_previsto':
+                        
+                    dataframe_flights[col] = dataframe_flights[col].astype(str).str.upper()
+                    dataframe_flights[col] = dataframe_flights[col].replace(valores_invalidos, 'Não informado')
+                    dataframe_flights[col] = dataframe_flights[col].fillna('Não informado')
+                    
+                case 'tipo_aeronave' | 'retirada_bagagem' | 'codeshare' | 'estado_voo' | 'rota':
+                    
+                    dataframe_flights[col] = dataframe_flights[col].apply(
+                        lambda x: safe_literal_eval(x, mapper_fillna[col])
+                    )
+                case 'numero_voo' | 'codigo_companhia':
+                    
+                    dataframe_flights[col] = pd.to_numeric(dataframe_flights[col], errors='coerce')
+                    dataframe_flights[col] = dataframe_flights[col].fillna(0).astype('Int32')
+                    
+                case 'id':
+                    dataframe_flights[col] = pd.to_numeric(dataframe_flights[col], errors='coerce')
+                    dataframe_flights[col] = dataframe_flights[col].fillna(0).astype('Int64')
+                    
+                case 'versao_schema':
+                    
+                    dataframe_flights[col] = pd.to_numeric(dataframe_flights[col], errors='coerce')
+                    dataframe_flights[col] = dataframe_flights[col].fillna(0).astype('Int8')
+                    
+                case 'voo_operacional':
+
+                    dataframe_flights[col] = (
+                        dataframe_flights[col]
+                        .replace(valores_invalidos, pd.NA)
+                        .astype('boolean')
+                    )
+                    
+                case 'terminal':
+                    
+                    dataframe_flights[col] = pd.to_numeric(dataframe_flights[col], errors='coerce')
+                    dataframe_flights[col] = dataframe_flights[col].fillna(0).astype('Int16')
+
         dataframe_flights.to_csv('data/flights.csv')
-    
+        return dataframe_flights
+
     def _process_destinations(self):
         dataframe_destinations = pd.DataFrame(self.__raw_destinations) 
           
@@ -49,7 +157,7 @@ class Transform(TransformInterface):
             
             for col in colunas_traduzidas.keys():
                 if col not in dataframe_destinations.columns:
-                    raise TraducaoError(f"Coluna '{col}' não existe no dataframe")
+                    raise TraducaoError(f"Coluna '{col}' não existe no dataframe.")
             
             dataframe_destinations = dataframe_destinations.rename(columns=colunas_traduzidas)
         except TraducaoError as e:
