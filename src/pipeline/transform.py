@@ -1,6 +1,6 @@
 from src.domain.interfaces import  TransformInterface
 from src.domain.exceptions import TraducaoError
-from src.domain.shared import safe_literal_eval, EntityMapper, get_english
+from src.domain.service import safe_literal_eval, EntityMapper, get_english
 
 
 import pandas as pd
