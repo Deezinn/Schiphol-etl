@@ -3,7 +3,9 @@ from src.domain.exceptions import TraducaoError
 from src.domain.utils import safe_literal_eval, EntityMapper, get_english
 
 
-from src.infrastructure.database import AircraftTypes, Airlines, Destinations
+from src.infrastructure.database import AircraftTypes, Airlines, Destinations, Flights
+from pydantic import ValidationError
+
 
 import pandas as pd
 
@@ -41,6 +43,16 @@ class Transform(TransformInterface):
         dataframe_flights = pd.DataFrame(self.__raw_flights)
         try:
             colunas_traduzidas = {
+                "gate": "portao",
+                "pier": "pier",
+                "id": "id",
+                "isOperationalFlight": "voo_operacional",
+                "mainFlight": "voo_principal",
+                "prefixIATA": "prefixo_iata",
+                "prefixICAO": "prefixo_icao",
+                "airlineCode": "codigo_companhia",
+                "publicFlightState": "estado_voo",
+                "route": "rota",
                 "lastUpdatedAt": "ultima_atualizacao",
                 "actualLandingTime": "hora_pouso_real",
                 "aircraftRegistration": "registro_aeronave",
@@ -83,11 +95,11 @@ class Transform(TransformInterface):
         
             
         mapper_fillna = {
-            'tipo_aeronave' : {'iataMain': "Não informado", 'iataSub': 'Não informado'},
-            'retirada_bagagem': {'belts': 'Não informado'},
-            'codeshare': {'codeshares': 'Não informado'},
-            'estado_voo': {'flightStates': 'Não informado'},
-            'rota': {'destomatopms': 'Não informado', 'eu': 'Não informado', 'visa': False}
+            'tipo_aeronave' : {'iataMain': ["Não informado"], 'iataSub': ['Não informado']},
+            'retirada_bagagem': {'belts': ['Não informado']},
+            'codeshare': {'codeshares': ['Não informado']},
+            'estado_voo': {'flightStates': ['Não informado']},
+            'rota': {'destomatopms': ['Não informado'], 'eu': ['Não informado'], 'visa': False}
         }
         
         sentinela = pd.Timestamp('1900-01-01', tz='UTC')
@@ -109,11 +121,9 @@ class Transform(TransformInterface):
                     'prefixo_icao' | 'voo_principal' | 'pier' | 'portao' | 'tipo_servico' | \
                     'alocacao_checkin' | 'filtro_seguranca_previsto':
                     dataframe_flights[col] = dataframe_flights[col].astype(str).str.upper()
-                    dataframe_flights[col] = dataframe_flights[col].replace(valores_invalidos, 'Não informado')
-                    dataframe_flights[col] = dataframe_flights[col].fillna('Não informado')
                 case 'tipo_aeronave' | 'retirada_bagagem' | 'codeshare' | 'estado_voo' | 'rota':
                     dataframe_flights[col] = dataframe_flights[col].apply(
-                        lambda x: safe_literal_eval(x, mapper_fillna[col])
+                        lambda x: safe_literal_eval(x, mapper_fillna[col]) if isinstance(x, dict) else mapper_fillna[col]
                     )
                 case 'numero_voo' | 'codigo_companhia':
                     dataframe_flights[col] = pd.to_numeric(dataframe_flights[col], errors='coerce')
@@ -135,10 +145,11 @@ class Transform(TransformInterface):
                     dataframe_flights[col] = dataframe_flights[col].fillna(0).astype('Int16')
                 case _:
                     pass
-                    
-        print(dataframe_flights.to_dict(orient='records'))
-        return dataframe_flights
-
+        try:
+            return [Flights(**row) for row in dataframe_flights.to_dict(orient='records')]
+        except ValidationError as e:
+            print(e)
+            
     def _process_destinations(self):
         dataframe_destinations = pd.DataFrame(self.__raw_destinations) 
           
@@ -184,8 +195,10 @@ class Transform(TransformInterface):
                     )
                 case _:
                     pass
-                
-        return [Destinations(**row) for row in dataframe_destinations.to_dict(orient='records')]
+        try:
+            return [Destinations(**row) for row in dataframe_destinations.to_dict(orient='records')]
+        except ValidationError as e:
+            print(e)
         
     def _process_airlines(self):
         dataframe_airlines = pd.DataFrame(self.__raw_airlines)
@@ -243,7 +256,10 @@ class Transform(TransformInterface):
                 case _:
                     pass
                 
-        return [Airlines(**row) for row in dataframe_airlines.to_dict(orient='records')]
+        try:
+            return [Airlines(**row) for row in dataframe_airlines.to_dict(orient='records')]
+        except ValidationError as e:
+            print(e)
             
     def _process_aircraftTypes(self):
         dataframe_aircraftTypes = pd.DataFrame(self.__raw_aircraftTypes)
@@ -283,5 +299,7 @@ class Transform(TransformInterface):
                     dataframe_aircraftTypes[coluna] = dataframe_aircraftTypes[coluna].str.upper()
                 case _:
                     pass
-                             
-        return [AircraftTypes(**row) for row in dataframe_aircraftTypes.to_dict(orient='records')]
+        try:
+            return [AircraftTypes(**row) for row in dataframe_aircraftTypes.to_dict(orient='records')]
+        except ValidationError as e:
+            print(e)      
