@@ -2,9 +2,9 @@ from src.pipeline import Extract, Transform, Load
 import logging
 
 FORMAT = '%(asctime)s %(message)s'
-
 logging.basicConfig(filename='logs/teste.log', level=logging.INFO, format=FORMAT)
 logger = logging.getLogger(__name__)
+
 
 class Main:
     def __init__(self, extract, transform, load):
@@ -18,12 +18,12 @@ class Main:
       logger.info("Extração Finalizada")
       
       instance_process = self.__transform.load_raw_data(raw_data)
-      if instance_process:
-        logger.info("Transformação Iniciada")
-        process = instance_process.process_data()
-        logger.info("Teransformação finalizada")
       
-  
+      logger.info("Transformação Iniciada")
+      process = instance_process.process_data()
+      logger.info("Transformação finalizada")
+      
+
 if __name__ == "__main__":
   logger.info("Pipeline foi iniciada")
   extractor = Extract.load_api_url()

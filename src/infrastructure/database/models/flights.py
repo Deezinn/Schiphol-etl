@@ -2,7 +2,6 @@ from datetime import datetime
 
 from pydantic import BaseModel, ConfigDict
 
-
 class Flights(BaseModel):
     ultima_atualizacao: datetime
     hora_pouso_real: datetime

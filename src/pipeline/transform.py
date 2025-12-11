@@ -2,6 +2,10 @@ from src.domain.interfaces import  TransformInterface
 from src.domain.exceptions import TraducaoError
 from src.domain.utils import safe_literal_eval, EntityMapper, get_english
 
+from src.settings import init_logfire
+
+### Monitoramento de validação as entidades
+init_logfire()
 
 from src.infrastructure.database import AircraftTypes, Airlines, Destinations, Flights
 from pydantic import ValidationError

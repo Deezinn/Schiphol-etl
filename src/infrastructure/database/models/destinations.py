@@ -1,6 +1,5 @@
 from pydantic import BaseModel, ConfigDict
 
-
 class Destinations(BaseModel):
     pais: str
     codigo_iata: str

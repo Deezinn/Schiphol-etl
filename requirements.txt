@@ -7,3 +7,4 @@ requests
 types-requests
 pandas-stubs
 psycopg2-binary
+logfire

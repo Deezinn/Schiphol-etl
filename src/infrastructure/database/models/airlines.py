@@ -1,6 +1,5 @@
 from pydantic import BaseModel, ConfigDict
 
-
 class Airlines(BaseModel):
     codigo_iata: str
     codigo_icao: str
