@@ -1,8 +1,9 @@
 from dataclasses import dataclass
+from typing import Optional, Any, Dict, List
 
 @dataclass
 class AircraftTypes:
-    iataMain: str
-    iataSub: str
-    longDescription: str
-    shortDescription: str
+    iataMain: Optional[str] = None
+    iataSub: Optional[str] = None
+    longDescription: Optional[str] = None
+    shortDescription: Optional[str] = None

@@ -29,5 +29,3 @@ class Extract(ExtractInterface):
         except RequestException as exc:
             print(f"Erro ao consultar a api '{key}': {exc}")
         return data
-
-   

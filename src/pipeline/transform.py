@@ -1,7 +1,9 @@
 from src.domain.interfaces import  TransformInterface
 from src.domain.exceptions import TraducaoError
-from src.domain.service import safe_literal_eval, EntityMapper, get_english
+from src.domain.utils import safe_literal_eval, EntityMapper, get_english
 
+
+from src.infrastructure.database import AircraftTypes, Airlines, Destinations
 
 import pandas as pd
 
@@ -134,7 +136,7 @@ class Transform(TransformInterface):
                 case _:
                     pass
                     
-        dataframe_flights.to_csv('data/flights.csv')
+        print(dataframe_flights.to_dict(orient='records'))
         return dataframe_flights
 
     def _process_destinations(self):
@@ -183,8 +185,7 @@ class Transform(TransformInterface):
                 case _:
                     pass
                 
-        dataframe_destinations.to_csv('data/destinations.csv')
-        return dataframe_destinations
+        return [Destinations(**row) for row in dataframe_destinations.to_dict(orient='records')]
         
     def _process_airlines(self):
         dataframe_airlines = pd.DataFrame(self.__raw_airlines)
@@ -242,8 +243,7 @@ class Transform(TransformInterface):
                 case _:
                     pass
                 
-        dataframe_airlines.to_csv('data/airlines.csv')
-        return dataframe_airlines
+        return [Airlines(**row) for row in dataframe_airlines.to_dict(orient='records')]
             
     def _process_aircraftTypes(self):
         dataframe_aircraftTypes = pd.DataFrame(self.__raw_aircraftTypes)
@@ -271,8 +271,8 @@ class Transform(TransformInterface):
                 dataframe_aircraftTypes[coluna]
                 .replace(valores_invalidos, 'Não informado')
                 .fillna('Não informado')
-                .astype(str)
                 .str.strip()
+                .astype(str)
             )
         
         for coluna in dataframe_aircraftTypes.columns:
@@ -283,6 +283,5 @@ class Transform(TransformInterface):
                     dataframe_aircraftTypes[coluna] = dataframe_aircraftTypes[coluna].str.upper()
                 case _:
                     pass
-                
-        dataframe_aircraftTypes.to_csv('data/aircraftTypes.csv')
-        return dataframe_aircraftTypes
+                             
+        return [AircraftTypes(**row) for row in dataframe_aircraftTypes.to_dict(orient='records')]

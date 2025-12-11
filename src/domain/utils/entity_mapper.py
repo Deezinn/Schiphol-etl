@@ -14,7 +14,6 @@ class EntityMapper:
     
     @staticmethod
     def airlines(raw):
-        # 'iata', 'icao', 'nvls', 'publicName'
         dados = raw.get('airlines')
         return ([
             Airlines(iata=dado.get('iata'),
@@ -70,8 +69,3 @@ class EntityMapper:
         )
         for dado in dados
     ]
-
-    
-    
-    
-   

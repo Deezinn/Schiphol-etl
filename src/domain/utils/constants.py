@@ -8,6 +8,3 @@ API_ENDPOINTS = {
 }
 
 DEFAULT_LOCAL_DB = "src/database/schipholLocal.db"
-
-
-

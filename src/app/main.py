@@ -21,7 +21,6 @@ class Main:
       if instance_process:
         logger.info("Transformação Iniciada")
         process = instance_process.process_data()
-
         logger.info("Teransformação finalizada")
       
   

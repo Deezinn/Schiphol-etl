@@ -1,4 +1,5 @@
 import ast
+
 def safe_literal_eval(x, default):
     """Garante que literal_eval não quebre e retorna default se falhar."""
     if isinstance(x, (dict, list)):
