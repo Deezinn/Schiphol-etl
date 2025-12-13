@@ -124,7 +124,8 @@ class Transform(TransformInterface):
                 case 'registro_aeronave' | 'direcao_voo' | 'nome_voo' | 'prefixo_iata' | \
                     'prefixo_icao' | 'voo_principal' | 'pier' | 'portao' | 'tipo_servico' | \
                     'alocacao_checkin' | 'filtro_seguranca_previsto':
-                    dataframe_flights[col] = dataframe_flights[col].astype(str).str.upper()
+                    dataframe_flights[col] = (dataframe_flights[col].astype(str).str.upper()
+                                              .replace(valores_invalidos, 'Não informado'))
                 case 'tipo_aeronave' | 'retirada_bagagem' | 'codeshare' | 'estado_voo' | 'rota':
                     dataframe_flights[col] = dataframe_flights[col].apply(
                         lambda x: safe_literal_eval(x, mapper_fillna[col]) if isinstance(x, dict) else mapper_fillna[col]
