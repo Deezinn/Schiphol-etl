@@ -1,9 +1,14 @@
-from pydantic import BaseModel, ConfigDict
+from .base import Base
 
-class Airlines(BaseModel):
-    codigo_iata: str
-    codigo_icao: str
-    nivel: int
-    nome_publico: str
+from sqlalchemy.types import String, Integer
+from sqlalchemy.orm import mapped_column, Mapped
+
+class Airlines(Base):
+    __tablename__ = 'airlines'
     
-    model_config = ConfigDict(str_max_length=50)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    
+    codigo_iata: Mapped[str] = mapped_column(String(50), nullable=False)
+    codigo_icao: Mapped[str] = mapped_column(String(50), nullable=False)
+    nivel: Mapped[int] = mapped_column(Integer, nullable=False)
+    nome_publico: Mapped[str] = mapped_column(String(50), nullable=False) 

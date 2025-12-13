@@ -5,6 +5,7 @@ FORMAT = '%(asctime)s %(message)s'
 logging.basicConfig(filename='logs/teste.log', level=logging.INFO, format=FORMAT)
 logger = logging.getLogger(__name__)
 
+from src.settings.create_table import create_tables
 
 class Main:
     def __init__(self, extract, transform, load):
@@ -23,9 +24,15 @@ class Main:
       process = instance_process.process_data()
       logger.info("Transformação finalizada")
       
+      logger.info("Processo de carga iniciado")
+      self.__load.load_all(data=process)
+      logger.info("Processo de carga finalizado")
+      
 
 if __name__ == "__main__":
   logger.info("Pipeline foi iniciada")
+  create_tables()
   extractor = Extract.load_api_url()
-  Main(extractor, Transform, Load).run_all()
+  loader = Load()
+  Main(extractor, Transform, loader).run_all()
   logger.info("Pipeline finalizada")

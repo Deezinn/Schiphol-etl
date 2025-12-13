@@ -7,9 +7,8 @@ from src.settings import init_logfire
 ### Monitoramento de validação as entidades
 init_logfire()
 
-from src.infrastructure.database import AircraftTypes, Airlines, Destinations, Flights
+from src.infrastructure.database.schemas import AircraftTypes, Airlines, Destinations, Flights
 from pydantic import ValidationError
-
 
 import pandas as pd
 
