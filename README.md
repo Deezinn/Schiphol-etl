@@ -366,4 +366,3 @@ Projeto desenvolvido por **André Luiz**, com foco em boas práticas de engenhar
 
 ---
 
-Se quiser evoluir este projeto para **Airflow, CI/CD ou Data Lake**, ele já está pronto estruturalmente para isso.
